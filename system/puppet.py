@@ -80,6 +80,12 @@ options:
     required: false
     default: None
     version_added: "2.1"
+  tags:
+    description:
+      - Comma-separated list of puppet tags without spaces to be used.
+    required: false
+    default: None
+    version_added: "2.1"
   execute:
     description:
       - Execute a specific piece of Puppet code. It has no effect with
@@ -147,6 +153,7 @@ def main():
             facter_basename=dict(default='ansible'),
             environment=dict(required=False, default=None),
             certname=dict(required=False, default=None),
+            tags=dict(required=False, default=None),
             execute=dict(required=False, default=None),
         ),
         supports_check_mode=True,
@@ -211,6 +218,8 @@ def main():
             cmd += " --show_diff"
         if p['environment']:
             cmd += " --environment '%s'" % p['environment']
+        if p['tags']:
+            cmd += " --tags '%s'" % p['tags']
         if p['certname']:
             cmd += " --certname='%s'" % p['certname']
         if module.check_mode:
@@ -227,6 +236,8 @@ def main():
             cmd += " --certname='%s'" % p['certname']
         if p['execute']:
             cmd += " --execute '%s'" % p['execute']
+        if p['tags']:
+            cmd += " --tags '%s'" % p['tags']
         if module.check_mode:
             cmd += "--noop "
         else:
