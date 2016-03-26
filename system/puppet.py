@@ -112,6 +112,9 @@ EXAMPLES = '''
 # Run puppet using a specific piece of Puppet code. Has no effect with a
 # puppetmaster.
 - puppet: execute='include ::mymodule'
+
+# Run puppet using a specific tags
+- puppet: tags=update,nginx
 '''
 
 
