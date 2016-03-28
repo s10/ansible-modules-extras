@@ -82,7 +82,7 @@ options:
     version_added: "2.1"
   tags:
     description:
-      - Comma-separated list of puppet tags without spaces to be used.
+      - A comma-separated list of puppet tags to be used.
     required: false
     default: None
     version_added: "2.1"
@@ -156,7 +156,7 @@ def main():
             facter_basename=dict(default='ansible'),
             environment=dict(required=False, default=None),
             certname=dict(required=False, default=None),
-            tags=dict(required=False, default=None),
+            tags=dict(required=False, default=None, type='list'),
             execute=dict(required=False, default=None),
         ),
         supports_check_mode=True,
@@ -222,7 +222,7 @@ def main():
         if p['environment']:
             cmd += " --environment '%s'" % p['environment']
         if p['tags']:
-            cmd += " --tags '%s'" % p['tags']
+            cmd += " --tags '%s'" % ','.join(p['tags'])
         if p['certname']:
             cmd += " --certname='%s'" % p['certname']
         if module.check_mode:
@@ -240,7 +240,7 @@ def main():
         if p['execute']:
             cmd += " --execute '%s'" % p['execute']
         if p['tags']:
-            cmd += " --tags '%s'" % p['tags']
+            cmd += " --tags '%s'" % ','.join(p['tags'])
         if module.check_mode:
             cmd += "--noop "
         else:
